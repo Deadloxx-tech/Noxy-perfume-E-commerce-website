@@ -1,0 +1,1143 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="perfume-detail-container">
+    <div class="breadcrumb">
+        <a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a>
+        <span class="separator">></span>
+        <a href="{{ url_for('showproduct') }}"><i class="fas fa-spray-can"></i> Perfumes</a>
+        <span class="separator">></span>
+        <span class="current">{{ perfumes.name }}</span>
+    </div>
+
+    <div class="perfume-detail-card">
+        <div class="perfume-image-section">
+            <div class="perfume-image-container">
+                <img src="{{ url_for('static', filename='images/' + perfumes.image) }}" 
+                     alt="{{ perfumes.name }}" 
+                     class="perfume-image" 
+                     id="mainImage">
+                
+                {% if perfumes.offer %}
+                    <div class="badge offer-badge">
+                        <i class="fas fa-tag"></i> Special Offer
+                    </div>
+                {% endif %}
+                
+                {% if perfumes.new %}
+                    <div class="badge new-badge">
+                        <i class="fas fa-star"></i> New Arrival
+                    </div>
+                {% endif %}
+            </div>
+            
+            <!-- <div class="image-gallery">
+                <div class="thumbnail active" onclick="changeImage('{{ url_for('static', filename='images/' + perfumes.image) }}')">
+                    <img src="{{ url_for('static', filename='images/' + perfumes.image) }}" alt="Main view">
+                </div>
+                Additional thumbnails could be added here 
+            </div> -->
+        </div>
+
+        <div class="perfume-info-section">
+            <div class="perfume-header">
+                <h1 class="perfume-name">{{ perfumes.name }}</h1>
+                <div class="category-tag">
+                    <i class="fas fa-tag"></i> {{ perfumes.category }}
+                </div>
+            </div>
+
+            <div class="price-section">
+                <span class="current-price">{{ perfumes.price }}</span>
+                {% if perfumes.offer %}
+                    <span class="original-price">₹{{ (perfumes.price[1:] | int * 1.2) | int }}</span>
+                    <span class="discount-tag">20% OFF</span>
+                {% endif %}
+            </div>
+
+             <!-- Perfume Description -->
+<div class="product-description">
+    <h3><i class="fas fa-info-circle"></i> About This Perfume</h3>
+
+    <div class="description-content">
+        {% if 'Oro' in perfumes.name %}
+            <p><strong>Golden Elegance:</strong> Oro captures the essence of pure gold with warm, radiant notes of saffron, vanilla, and precious woods, evoking luxury and sophistication for those who appreciate timeless refinement.</p>
+
+        {% elif 'Imperium' in perfumes.name %}
+            <p><strong>Imperial Majesty:</strong> Imperium embodies regal power with deep, commanding accords of dark chocolate, leather, and exotic spices, perfect for the discerning individual who commands attention.</p>
+
+        {% elif 'Noir' in perfumes.name %}
+            <p><strong>Midnight Mystery:</strong> Noir unfolds like a velvet night, blending smoky oud, black rose, and patchouli for an enigmatic, seductive fragrance that lingers with intrigue and allure.</p>
+
+        {% elif 'Valor' in perfumes.name %}
+            <p><strong>Courageous Spirit:</strong> Valor ignites the senses with bold citrus top notes, herbal heart, and musky base, symbolizing strength and bravery in a fresh, invigorating composition.</p>
+
+        {% elif 'Dusk' in perfumes.name %}
+            <p><strong>Twilight Serenity:</strong> Dusk paints the sky with soft floral whispers of jasmine, sandalwood, and amber, creating a tranquil, romantic aroma ideal for evening enchantment.</p>
+
+        {% elif 'Aurum' in perfumes.name %}
+            <p><strong>Precious Radiance:</strong> Aurum shines with golden honey, neroli, and vetiver, offering a luminous, joyful scent that radiates warmth and positivity for everyday luxury.</p>
+
+        {% elif 'Ignis' in perfumes.name %}
+            <p><strong>Fiery Passion:</strong> Ignis burns with intense cinnamon, ginger, and tobacco leaves, delivering a spicy, passionate fragrance that fuels confidence and energy.</p>
+
+        {% elif 'Obsidian' in perfumes.name %}
+            <p><strong>Volcanic Depth:</strong> Obsidian emerges from dark depths with smoky incense, black currant, and ebony wood, crafting a mysterious, grounding scent for the bold explorer.</p>
+
+        {% elif 'Onyx' in perfumes.name %}
+            <p><strong>Stone Strength:</strong> Onyx stands firm with mineral accords, fresh mint, and earthy moss, providing a clean, resilient fragrance that embodies durability and elegance.</p>
+
+        {% elif 'Throne' in perfumes.name %}
+            <p><strong>Royal Authority:</strong> Throne commands respect with opulent frankincense, myrrh, and gold leaf notes, a majestic blend for those who rule with grace and power.</p>
+
+        {% else %}
+            <p><strong>Exquisite Fragrance:</strong> A carefully crafted perfume that delivers exceptional quality and lasting impression.</p>
+        {% endif %}
+    </div>
+</div>
+
+
+            
+
+                <div class="total-price">
+                    <span class="total-label">Total Price:</span>
+                    <span class="total-amount" id="totalPrice">{{ perfumes.price }}</span>
+                </div>
+                <div class="order-section">
+                <div class="quantity-selector">
+                    <label for="quantity"><i class="fas fa-shopping-cart"></i> Quantity:</label>
+                    <div class="quantity-controls">
+                        <button type="button" class="qty-btn" onclick="decreaseQuantity()">-</button>
+                        <input type="number" id="quantity" value="1" min="1" max="10" onchange="updateTotal()">
+                        <button type="button" class="qty-btn" onclick="increaseQuantity()">+</button>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn btn-primary order-btn" onclick="orderNow()">
+                        <i class="fas fa-shopping-cart"></i> Order Now
+                    </button>
+                    <button class="btn btn-secondary wishlist-btn" onclick="addToWishlist()">
+                        <i class="fas fa-heart"></i> Add to Wishlist
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Information Tabs -->
+     <div class="info-tabs">
+        <div class="tab-headers">
+            <button class="tab-header active" onclick="showTab('benefits')">
+                <i class="fas fa-star"></i> Benefits
+            </button>
+            <button class="tab-header" onclick="showTab('notes')">
+                <i class="fas fa-flask"></i> Fragrance Notes
+            </button>
+            <button class="tab-header" onclick="showTab('usage')">
+                <i class="fas fa-spray-can"></i> Usage Tips
+            </button>
+        </div>
+
+        <div class="tab-content">
+            <div id="benefits" class="tab-pane active">
+                <h4>Why Choose This Perfume?</h4>
+                <ul class="benefits-list">
+                    <li><i class="fas fa-clock"></i> Long-lasting fragrance (8-12 hours)</li>
+                    <li><i class="fas fa-certificate"></i> Premium quality ingredients</li>
+                    <li><i class="fas fa-award"></i> Unique and sophisticated scent</li>
+                    <li><i class="fas fa-gift"></i> Perfect for special occasions</li>
+                    <li><i class="fas fa-star"></i> Compliment-getter formula</li>
+                    <li><i class="fas fa-crown"></i> Luxury brand reputation</li>
+                    <li><i class="fas fa-heart"></i> Suitable for day & night wear</li>
+                    <li><i class="fas fa-leaf"></i> High-quality natural extracts</li>
+                </ul>
+            </div>
+
+            <div id="notes" class="tab-pane">
+                <h4>Fragrance Profile</h4>
+                <div class="placement-grid">
+                    <div class="placement-item">
+                        <i class="fas fa-sun"></i>
+                        <span>Top Notes</span>
+                        <small>Initial fresh impression</small>
+                    </div>
+                    <div class="placement-item">
+                        <i class="fas fa-heart"></i>
+                        <span>Heart Notes</span>
+                        <small>Main character of the scent</small>
+                    </div>
+                    <div class="placement-item">
+                        <i class="fas fa-tree"></i>
+                        <span>Base Notes</span>
+                        <small>Long-lasting foundation</small>
+                    </div>
+                </div>
+            </div>
+
+            <div id="usage" class="tab-pane">
+                <h4>Application & Care Tips</h4>
+                <div class="troubleshooting-list">
+                    <div class="issue-item">
+                        <div class="issue-problem">
+                            <i class="fas fa-spray-can text-primary"></i>
+                            <strong>Best Application Points</strong>
+                        </div>
+                        <div class="issue-solution">
+                            Apply on pulse points: wrists, neck, behind ears, and inner elbows for maximum projection.
+                        </div>
+                    </div>
+                    <div class="issue-item">
+                        <div class="issue-problem">
+                            <i class="fas fa-sun text-primary"></i>
+                            <strong>Storage Guidelines</strong>
+                        </div>
+                        <div class="issue-solution">
+                            Keep away from direct sunlight and heat. Store in a cool, dry place to preserve fragrance quality.
+                        </div>
+                    </div>
+                    <div class="issue-item">
+                        <div class="issue-problem">
+                            <i class="fas fa-clock text-primary"></i>
+                            <strong>Longevity Tips</strong>
+                        </div>
+                        <div class="issue-solution">
+                            Moisturize skin before applying. Layer with matching body lotion for extended wear time.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+/* Perfume Detail Specific Styles */
+.perfume-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.breadcrumb a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb a:hover {
+    color: var(--secondary-color);
+}
+
+.separator {
+    color: var(--text-muted);
+}
+
+.current {
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.perfume-detail-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    background: var(--surface-color);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+    margin-bottom: 3rem;
+}
+
+.perfume-image-section {
+    position: relative;
+}
+
+.perfume-image-container {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin-bottom: 1rem;
+}
+
+.perfume-image {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.perfume-image:hover {
+    transform: scale(1.05);
+}
+
+.badge {
+    position: absolute;
+    top: 20px;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.offer-badge {
+    right: 20px;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    animation: pulse 2s infinite;
+}
+
+.new-badge {
+    left: 20px;
+    background: linear-gradient(135deg, #4834d4, #686de0);
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.image-gallery {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.thumbnail {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.thumbnail.active {
+    border-color: var(--primary-color);
+    transform: scale(1.05);
+}
+
+.thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.perfume-info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.perfume-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.perfume-name {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1.2;
+    margin: 0;
+}
+
+.category-tag {
+    background: linear-gradient(135deg, var(--accent-color), var(--light-green));
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.price-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.current-price {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.original-price {
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    text-decoration: line-through;
+}
+
+.discount-tag {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    animation: pulse 2s infinite;
+}
+
+.product-description {
+    background: var(--bg-color);
+    padding: 2rem;
+    border-radius: 15px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.product-description h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+
+.description-content p {
+    margin-bottom: 1rem;
+    line-height: 1.8;
+}
+
+.order-section {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: var(--card-shadow);
+}
+
+.quantity-selector {
+    margin-bottom: 2rem;
+}
+
+.quantity-selector label {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    width: fit-content;
+}
+
+.qty-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.qty-btn:hover {
+    background: var(--secondary-color);
+}
+
+#quantity {
+    border: none;
+    padding: 12px 20px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    width: 80px;
+    background: #f8f9fa;
+    color: #2c3e50;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+}
+
+#quantity:focus {
+    outline: none;
+    background: #e9ecef;
+    color: #1a252f;
+}
+
+.total-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: rgba(255,255,255,0.15);
+    border-radius: 12px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.action-buttons .btn {
+    flex: 1;
+    background: rgb(91, 34, 34);
+    color: var(--primary-color);
+    border: 2px solid rgb(129, 51, 51);
+    font-weight: 600;
+    padding: 15px 25px;
+}
+
+.action-buttons .btn:hover {
+    background: transparent;
+    color: white;
+    border-color: white;
+    transform: translateY(-3px);
+}
+
+.info-tabs {
+    background: var(--surface-color);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+}
+
+.tab-headers {
+    display: flex;
+    background: var(--bg-color);
+    border-bottom: 1px solid var(--border-color);
+}
+.tab-header {
+    flex: 1;
+    padding: 1.5rem 2rem;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-header.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    background: var(--surface-color);
+}
+
+.tab-header:hover {
+    color: var(--primary-color);
+    background: var(--surface-color);
+}
+
+.tab-content {
+    padding: 3rem;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+.tab-pane h4 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+}
+
+.benefits-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.benefits-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1rem;
+    background: var(--bg-color);
+    border-radius: 12px;
+    transition: transform 0.3s ease
+}
+
+.benefits-list li:hover {
+    transform: translateX(10px);
+}
+
+.benefits-list i {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.placement-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+.placement-item {
+    text-align: center;
+    padding: 2rem;
+    background: var(--bg-color);
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+
+.placement-item:hover {
+    transform: translateY(-5px);
+}
+
+.placement-item i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.placement-item span {
+    display: block;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.placement-item small {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.troubleshooting-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.issue-item {
+    padding: 1.5rem;
+    background: var(--bg-color);
+    border-radius: 12px;
+    border-left: 4px solid var(--warning-color);
+}
+
+.issue-problem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.5rem;
+}
+
+.issue-problem strong {
+    color: var(--text-color);
+}
+
+.issue-solution {
+    color: var(--text-muted);
+    margin-left: 2rem;
+    line-height: 1.6;
+}
+
+.text-warning {
+    color: var(--warning-color) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .perfumes-detail-card {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2rem;
+    }
+    
+    .perfumes-name {
+        font-size: 2rem;
+    }
+    
+    .perfumes-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .care-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .tab-headers {
+        flex-direction: column;
+    }
+    
+    .benefits-list {
+        grid-template-columns: 1fr;
+    }
+    
+    .placement-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .current-price {
+        font-size: 2rem;
+    }
+    
+    .plant-image {
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .plant-detail-container {
+        padding: 0 10px;
+    }
+    
+    .breadcrumb {
+        font-size: 0.8rem;
+        flex-wrap: wrap;
+    }
+    
+    .order-section {
+        padding: 1.5rem;
+    }
+    
+    .tab-content {
+        padding: 1.5rem;
+    }
+    
+    .quantity-controls {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    #quantity {
+        width: 60px;
+    }
+}
+
+/* Animation for loading states */
+.loading-skeleton {
+    background: linear-gradient(90deg, var(--bg-color) 25%, var(--border-color) 50%, var(--bg-color) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Accessibility improvements */
+.btn:focus,
+.tab-header:focus,
+.qty-btn:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+    .action-buttons,
+    .info-tabs,
+    .breadcrumb {
+        display: none;
+    }
+    
+    .plant-detail-card {
+        grid-template-columns: 1fr;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+}
+</style>
+
+<script>
+// Global variables
+let basePrice = parseFloat('{{ perfumes.price }}'.replace('₹', '').replace(',', ''));
+let currentQuantity = 1;
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', function() {
+    updateTotal();
+    
+    // Add smooth transitions to all interactive elements
+    const interactiveElements = document.querySelectorAll('.btn, .tab-header, .thumbnail, .care-item');
+    interactiveElements.forEach(element => {
+        element.style.transition = 'all 0.3s ease';
+    });
+});
+
+// Image gallery functionality
+function changeImage(imageSrc) {
+    const mainImage = document.getElementById('mainImage');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    
+    // Update main image with fade effect
+    mainImage.style.opacity = '0.5';
+    setTimeout(() => {
+        mainImage.src = imageSrc;
+        mainImage.style.opacity = '1';
+    }, 150);
+    
+    // Update active thumbnail
+    thumbnails.forEach(thumb => thumb.classList.remove('active'));
+    event.target.closest('.thumbnail').classList.add('active');
+}
+
+// Quantity control functions
+function increaseQuantity() {
+    const quantityInput = document.getElementById('quantity');
+    const maxQuantity = parseInt(quantityInput.max);
+    
+    if (currentQuantity < maxQuantity) {
+        currentQuantity++;
+        quantityInput.value = currentQuantity;
+        updateTotal();
+        
+        // Add visual feedback
+        quantityInput.style.transform = 'scale(1.1)';
+        setTimeout(() => {
+            quantityInput.style.transform = 'scale(1)';
+        }, 200);
+    } else {
+        // Show max quantity reached feedback
+        showNotification('Maximum quantity reached!', 'warning');
+    }
+}
+
+function decreaseQuantity() {
+    const quantityInput = document.getElementById('quantity');
+    
+    if (currentQuantity > 1) {
+        currentQuantity--;
+        quantityInput.value = currentQuantity;
+        updateTotal();
+        
+        // Add visual feedback
+        quantityInput.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+            quantityInput.style.transform = 'scale(1)';
+        }, 200);
+    } else {
+        showNotification('Minimum quantity is 1!', 'warning');
+    }
+}
+
+function updateTotal() {
+    const quantityInput = document.getElementById('quantity');
+    const totalPriceElement = document.getElementById('totalPrice');
+    
+    currentQuantity = parseInt(quantityInput.value) || 1;
+    const totalPrice = basePrice * currentQuantity;
+    
+    // Animate the price change
+    totalPriceElement.style.transform = 'scale(1.1)';
+    totalPriceElement.style.color = 'var(--success-color)';
+    
+    setTimeout(() => {
+        totalPriceElement.textContent = `₹${totalPrice.toLocaleString()}`;
+        totalPriceElement.style.transform = 'scale(1)';
+        totalPriceElement.style.color = '';
+    }, 200);
+}
+
+// Tab functionality
+function showTab(tabName) {
+    const tabHeaders = document.querySelectorAll('.tab-header');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    
+    // Remove active class from all tabs
+    tabHeaders.forEach(header => header.classList.remove('active'));
+    tabPanes.forEach(pane => {
+        pane.classList.remove('active');
+        pane.style.opacity = '0';
+    });
+    
+    // Add active class to clicked tab
+    event.target.classList.add('active');
+    const targetPane = document.getElementById(tabName);
+    
+    setTimeout(() => {
+        targetPane.classList.add('active');
+        targetPane.style.opacity = '1';
+    }, 150);
+}
+
+// Order functionality
+// Option 1: Direct redirect without any delay
+function orderNow() {
+    const perfumeName = '{{ perfumes.name }}';
+    const perfumePrice = basePrice;
+    const perfumeImage = '{{ perfumes.image }}';
+    
+    // Prepare order data
+    const orderData = {
+        perfume_name: perfumeName,
+        perfume_price: perfumePrice,
+        perfume_image: perfumeImage,
+        quantity: currentQuantity,
+        total_price: perfumePrice * currentQuantity,
+        perfume_category: '{{ perfumes.category }}'
+    };
+    
+    // Store order data in sessionStorage
+    sessionStorage.setItem('orderData', JSON.stringify(orderData));
+    
+    // Direct redirect to delivery info page
+    window.location.href = "{{ url_for('deliveryinfo') }}";
+}
+
+// Option 2: With brief loading state (if you want minimal feedback)
+function orderNowWithLoading() {
+    const orderBtn = document.querySelector('.order-btn');
+    const perfumeName = '{{ perfumes.name }}';
+    const perfumePrice = basePrice;
+    const perfumeImage = '{{ perfumes.image }}';
+    
+    // Show brief loading state
+    const originalText = orderBtn.innerHTML;
+    orderBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+    orderBtn.disabled = true;
+    
+    // Prepare order data
+    const orderData = {
+        perfume_name: perfumeName,
+        perfume_price: perfumePrice,
+        perfume_image: perfumeImage,
+        quantity: currentQuantity,
+        total_price: perfumePrice * currentQuantity,
+        perfume_category: '{{ perfumes.category }}'
+    };
+    
+    // Store order data in sessionStorage
+    sessionStorage.setItem('orderData', JSON.stringify(orderData));
+    
+    // Quick redirect after brief delay
+    setTimeout(() => {
+        window.location.href = "{{ url_for('deliveryinfo') }}";
+    }, 500);
+}
+// Wishlist functionality
+function addToWishlist() {
+    const wishlistBtn = document.querySelector('.wishlist-btn');
+    const originalText = wishlistBtn.innerHTML;
+    
+    // Check if already in wishlist
+    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+    const perfumeId = '{{ perfumes.get("id", perfumes.name) }}';
+    
+    if (wishlist.includes(perfumeId)) {
+        showNotification('Already in wishlist!', 'info');
+        return;
+    }
+    
+    // Add to wishlist
+    wishlist.push(perfumeId);
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    
+    
+
+
+
+    // Visual feedback
+    wishlistBtn.innerHTML = '<i class="fas fa-heart"></i> Added to Wishlist!';
+    wishlistBtn.style.background = 'var(--success-color)';
+    wishlistBtn.style.color = 'white';
+    
+    showNotification('Added to wishlist successfully!', 'success');
+    
+    setTimeout(() => {
+        wishlistBtn.innerHTML = originalText;
+        wishlistBtn.style.background = '';
+        wishlistBtn.style.color = '';
+    }, 2000);
+}
+
+// Notification system
+function showNotification(message, type = 'info') {
+    // Remove existing notifications
+    const existingNotification = document.querySelector('.notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.innerHTML = `
+        <i class="fas fa-${getNotificationIcon(type)}"></i>
+        <span>${message}</span>
+        <button onclick="this.parentElement.remove()" class="notification-close">
+            <i class="fas fa-times"></i>
+        </button>
+    `;
+    
+    // Add styles
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--surface-color);
+        color: var(--text-color);
+        padding: 15px 20px;
+        border-radius: 10px;
+        box-shadow: var(--card-shadow);
+        border-left: 4px solid var(--${type === 'success' ? 'success' : type === 'warning' ? 'warning' : 'primary'}-color);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 10000;
+        animation: slideIn 0.3s ease;
+        max-width: 300px;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => notification.remove(), 300);
+        }
+    }, 3000);
+}
+
+function getNotificationIcon(type) {
+    switch(type) {
+        case 'success': return 'check-circle';
+        case 'warning': return 'exclamation-triangle';
+        case 'error': return 'times-circle';
+        default: return 'info-circle';
+    }
+}
+
+// Add CSS animations for notifications
+const notificationStyles = document.createElement('style');
+notificationStyles.textContent = `
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+    
+    .notification-close {
+        background: none;
+        border: none;
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 0;
+        margin-left: auto;
+        font-size: 0.9rem;
+    }
+    
+    .notification-close:hover {
+        color: var(--text-color);
+    }
+`;
+document.head.appendChild(notificationStyles);
+
+// Keyboard navigation support
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowUp' && e.target.id === 'quantity') {
+        e.preventDefault();
+        increaseQuantity();
+    } else if (e.key === 'ArrowDown' && e.target.id === 'quantity') {
+        e.preventDefault();
+        decreaseQuantity();
+    }
+});
+
+// Image zoom functionality
+document.getElementById('mainImage').addEventListener('click', function() {
+    const modal = document.createElement('div');
+    modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        cursor: pointer;
+    `;
+    
+    const img = document.createElement('img');
+    img.src = this.src;
+    img.style.cssText = `
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+        border-radius: 10px;
+    `;
+    
+    modal.appendChild(img);
+    document.body.appendChild(modal);
+    
+    modal.addEventListener('click', function() {
+        document.body.removeChild(modal);
+    });
+});
+
+// Lazy loading for better performance
+if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.classList.remove('loading-skeleton');
+                observer.unobserve(img);
+            }
+        });
+    });
+    
+    document.querySelectorAll('img[data-src]').forEach(img => {
+        imageObserver.observe(img);
+    });
+}
+</script>
+
+{% endblock %}

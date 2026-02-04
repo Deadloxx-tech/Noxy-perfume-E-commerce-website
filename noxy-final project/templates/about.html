@@ -1,0 +1,362 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* Additional styles specific to about page */
+    .about-hero {
+        background: linear-gradient(135deg, #f5f1eb 0%, #e8ddd4 100%);
+        padding: 8rem 0 4rem;
+        margin-top: 80px; /* Account for fixed header */
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .about-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600"><circle cx="100" cy="100" r="80" fill="rgba(139,90,60,0.08)"/><circle cx="300" cy="300" r="120" fill="rgba(139,90,60,0.06)"/><circle cx="200" cy="500" r="60" fill="rgba(139,90,60,0.04)"/></svg>') center/cover;
+        opacity: 0.5;
+    }
+    
+    .about-hero-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .about-hero h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 4rem;
+        color: #1a1a1a;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+    
+    .about-hero p {
+        font-size: 1.3rem;
+        color: #666;
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+    
+    .story-section {
+        padding: 5rem 0;
+        background: white;
+    }
+    
+    .story-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        margin-bottom: 4rem;
+    }
+    
+    .story-text h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.8rem;
+        color: #1a1a1a;
+        margin-bottom: 1.5rem;
+        font-weight: 600;
+    }
+    
+    .story-text p {
+        font-size: 1.1rem;
+        color: #666;
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+    }
+    
+    .story-image {
+        height: 400px;
+        background: linear-gradient(135deg, #f5f1eb, #e8ddd4);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 6rem;
+        opacity: 0.4;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .story-image::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, rgba(139,90,60,0.1) 0%, transparent 70%);
+    }
+    
+    .values-section {
+        padding: 5rem 0;
+        background: linear-gradient(135deg, #f5f1eb 0%, #e8ddd4 100%);
+    }
+    
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+    
+    .value-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+    }
+    
+    .value-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .value-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.8;
+    }
+    
+    .value-card h3 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        color: #1a1a1a;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+    
+    .value-card p {
+        color: #666;
+        line-height: 1.6;
+    }
+    
+    .team-section {
+        padding: 5rem 0;
+        background: white;
+    }
+    
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+    
+    .team-card {
+        text-align: center;
+        padding: 1.5rem;
+        border-radius: 20px;
+        transition: transform 0.3s ease;
+    }
+    
+    .team-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .team-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f5f1eb, #e8ddd4);
+        margin: 0 auto 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        opacity: 0.6;
+    }
+    
+    .team-card h4 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.3rem;
+        color: #1a1a1a;
+        margin-bottom: 0.5rem;
+    }
+    
+    .team-card .role {
+        color: #8b5a3c;
+        font-weight: 500;
+        margin-bottom: 1rem;
+    }
+    
+    .team-card p {
+        color: #666;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    
+    .cta-section {
+        padding: 4rem 0;
+        background: #1a1a1a;
+        text-align: center;
+        color: white;
+    }
+    
+    .cta-section h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: white;
+    }
+    
+    .cta-section p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        color: #ccc;
+    }
+    
+    .cta-button {
+        background: #8b5a3c;
+        color: white;
+        padding: 1rem 2.5rem;
+        text-decoration: none;
+        font-weight: 500;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        display: inline-block;
+    }
+    
+    .cta-button:hover {
+        background: #6d4530;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(139, 90, 60, 0.3);
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+        .about-hero h1 {
+            font-size: 2.5rem;
+        }
+        
+        .story-grid {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        
+        .story-text h2 {
+            font-size: 2rem;
+        }
+        
+        .values-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .team-grid {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+    }
+</style>
+
+<!-- About Hero Section -->
+<section class="about-hero">
+    <div class="container">
+        <div class="about-hero-content">
+            <h1>Welcome to NOXY</h1>
+            <p>Where luxury meets artistry in the world of fine fragrances. Discover the passion, craftsmanship, and dedication that goes into every bottle.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Our Story Section -->
+<section class="story-section">
+    <div class="container">
+        <div class="story-grid">
+            <div class="story-text">
+                <h2>Our Story</h2>
+                <p>Founded in 2020 with a vision to revolutionize the fragrance industry, NOXY emerged from a deep passion for the art of perfumery. Our journey began in a small atelier where master perfumers experimented with rare essences and timeless techniques.</p>
+                <p>Today, we continue to honor that tradition while embracing innovation, creating fragrances that tell stories, evoke emotions, and capture the essence of modern luxury.</p>
+            </div>
+            <div class="story-image">🌺</div>
+        </div>
+        
+        <div class="story-grid">
+            <div class="story-image">🧪</div>
+            <div class="story-text">
+                <h2>Our Craft</h2>
+                <p>Every NOXY fragrance is a masterpiece of olfactory art. We source the finest ingredients from around the world - from Bulgarian rose petals to Indonesian sandalwood, from French lavender to Indian jasmine.</p>
+                <p>Our master perfumers spend months perfecting each composition, ensuring that every note harmonizes perfectly to create a scent that is both distinctive and memorable.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Values Section -->
+<section class="values-section">
+    <div class="container">
+        <h2 class="section-title">Our Values</h2>
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon">🌿</div>
+                <h3>Sustainability</h3>
+                <p>We are committed to sustainable practices, from ethically sourced ingredients to eco-friendly packaging, ensuring our luxury doesn't come at the expense of our planet.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">💎</div>
+                <h3>Quality</h3>
+                <p>We never compromise on quality. Every ingredient is carefully selected and every bottle is meticulously crafted to meet the highest standards of luxury perfumery.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">🎨</div>
+                <h3>Artistry</h3>
+                <p>Fragrance is an art form. Our perfumers are artists who paint with scents, creating compositions that are both beautiful and meaningful.</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">✨</div>
+                <h3>Innovation</h3>
+                <p>While respecting traditional techniques, we embrace innovation to create fragrances that reflect the modern world and contemporary sensibilities.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="team-section">
+    <div class="container">
+        <h2 class="section-title">Meet Our Team</h2>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">👩‍🔬</div>
+                <h4>Elena rosie</h4>
+                <div class="role">Master Perfumer</div>
+                <p>With over 20 years of experience, Elena leads our fragrance creation process, bringing her expertise in rare essences and innovative compositions.</p>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">👨‍💼</div>
+                <h4>M.Papun Patra</h4>
+                <div class="role">Creative Director</div>
+                <p>Papun oversees the creative vision of NOXY, ensuring each fragrance tells a unique story and connects with our customers on an emotional level.</p>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">👨‍💼</div>
+                <h4>Biswajit patra</h4>
+                <div class="role">Brand Designer</div>
+                <p>Biswa crafts the visual identity of NOXY, from our elegant packaging to our sophisticated brand experience, ensuring beauty in every detail.</p>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">👨‍🔬</div>
+                <h4>Pratush Rana</h4>
+                <div class="role">Quality Assurance</div>
+                <p>Pratush ensures that every bottle meets our exacting standards, overseeing quality control from ingredient sourcing to final packaging.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <h2>Experience NOXY</h2>
+        <p>Ready to discover your signature scent? Explore our collection and find the fragrance that speaks to your soul.</p>
+       <li><a href="{{ url_for('showproduct') }}" class="cta-button">Shop Our Collection</a></li>
+    </div>
+</section>
+{% endblock %}

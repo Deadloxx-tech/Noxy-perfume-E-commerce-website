@@ -1,0 +1,833 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="delivery-wrapper">
+    <!-- Page Header -->
+    <div class="delivery-header">
+        <div class="header-content">
+            <div class="header-icon">
+                <i class="fas fa-shipping-fast"></i>
+            </div>
+            <h1 class="header-title">Delivery Information</h1>
+            <p class="header-subtitle">Complete your order with secure delivery to your doorstep</p>
+        </div>
+    </div>
+
+    <!-- Progress Steps -->
+    <div class="progress-container">
+        <div class="progress-steps">
+            <div class="progress-step active">
+                <div class="step-circle">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <span class="step-text">Delivery Details</span>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step">
+                <div class="step-circle">
+                    <i class="fas fa-credit-card"></i>
+                </div>
+                <span class="step-text">Payment</span>
+            </div>
+            <div class="progress-line"></div>
+            <div class="progress-step">
+                <div class="step-circle">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <span class="step-text">Confirmation</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="delivery-grid">
+        <!-- Form Section -->
+        <div class="form-section">
+            <div class="form-card">
+                <form method="POST" id="deliveryForm" novalidate>
+                    <input type="hidden" name="perfume_id" value="{{ perfume_id }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <!-- Personal Information -->
+                    <div class="form-block">
+                        <div class="block-header">
+                            <i class="fas fa-user-circle"></i>
+                            <h2>Personal Information</h2>
+                        </div>
+                        
+                        <div class="input-group">
+                            {{ form.name.label(class="input-label") }}
+                            <div class="input-wrapper">
+                                {{ form.name(class="input-field", placeholder="John Doe", autocomplete="name") }}
+                                <i class="input-icon fas fa-user"></i>
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                {{ form.email.label(class="input-label") }}
+                                <div class="input-wrapper">
+                                    {{ form.email(class="input-field", placeholder="john@example.com", autocomplete="email") }}
+                                    <i class="input-icon fas fa-envelope"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                {{ form.phone_number.label(class="input-label") }}
+                                <div class="input-wrapper">
+                                    {{ form.phone_number(class="input-field", placeholder="9876543210", autocomplete="tel") }}
+                                    <i class="input-icon fas fa-phone"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Address -->
+                    <div class="form-block">
+                        <div class="block-header">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <h2>Delivery Address</h2>
+                        </div>
+                        
+                        <div class="input-group">
+                            {{ form.address.label(class="input-label") }}
+                            <div class="input-wrapper">
+                                {{ form.address(class="input-field textarea-field", placeholder="House No., Street, Area, Landmark", rows="3", autocomplete="street-address") }}
+                                <i class="input-icon fas fa-home"></i>
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="input-group">
+                                {{ form.pincode.label(class="input-label") }}
+                                <div class="input-wrapper">
+                                    {{ form.pincode(class="input-field", placeholder="123456", maxlength="6", autocomplete="postal-code") }}
+                                    <i class="input-icon fas fa-map-pin"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                {{ form.homeoffice.label(class="input-label") }}
+                                <div class="input-wrapper">
+                                    {{ form.homeoffice(class="input-field select-field") }}
+                                    <i class="input-icon fas fa-building"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <a href="{{ url_for('showproduct') }}" class="btn btn-outline">
+                            <i class="fas fa-arrow-left"></i>
+                            <span>Back to Products</span>
+                        </a>
+                        {{ form.submit(class="btn btn-primary", value="Continue to Payment") }}
+                        <i class="fas fa-arrow-right btn-icon"></i>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Sidebar Section -->
+        <div class="sidebar-section">
+            <!-- Benefits Card -->
+            <div class="info-card benefits-card">
+                <div class="card-header">
+                    <i class="fas fa-gifts"></i>
+                    <h3>Delivery Benefits</h3>
+                </div>
+                <div class="card-body">
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>Premium Packaging</h4>
+                            <p>Eco-friendly materials with elegant presentation</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-shipping-fast"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>Express Delivery</h4>
+                            <p>2-3 business days nationwide shipping</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>Secure Transit</h4>
+                            <p>Insurance coverage on all shipments</p>
+                        </div>
+                    </div>
+                    
+                    <div class="benefit-item">
+                        <div class="benefit-icon">
+                            <i class="fas fa-undo-alt"></i>
+                        </div>
+                        <div class="benefit-content">
+                            <h4>7-Day Guarantee</h4>
+                            <p>Free replacement for damaged items</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Care Tips Card -->
+            <div class="info-card tips-card">
+                <div class="card-header">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Care Instructions</h3>
+                </div>
+                <div class="card-body">
+                    <div class="tip-item">
+                        <i class="fas fa-thermometer-half"></i>
+                        <p>Store in a cool, dry place away from heat</p>
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-sun"></i>
+                        <p>Avoid direct sunlight exposure</p>
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-hand-holding-heart"></i>
+                        <p>Handle bottles gently to prevent leakage</p>
+                    </div>
+                    <div class="tip-item">
+                        <i class="fas fa-clock"></i>
+                        <p>Best used within 2 years of opening</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Main Container */
+    .delivery-wrapper {
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px 60px;
+    }
+
+    /* Header Section */
+    .delivery-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .header-content {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .header-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, var(--secondary-color), var(--accent-gold));
+        border-radius: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 10px 30px rgba(215, 133, 21, 0.3);
+    }
+
+    .header-icon i {
+        font-size: 2.5rem;
+        color: white;
+    }
+
+    .header-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 3rem;
+        font-weight: 300;
+        color: var(--text-dark);
+        margin-bottom: 15px;
+        letter-spacing: 1px;
+    }
+
+    .header-subtitle {
+        font-size: 1.1rem;
+        color: var(--text-light);
+        line-height: 1.6;
+    }
+
+    /* Progress Steps */
+    .progress-container {
+        margin-bottom: 60px;
+    }
+
+    .progress-steps {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0;
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .progress-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        position: relative;
+    }
+
+    .step-circle {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--bg-cream);
+        border: 3px solid var(--border-subtle);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 2;
+    }
+
+    .step-circle i {
+        font-size: 1.4rem;
+        color: var(--text-light);
+        transition: all 0.3s ease;
+    }
+
+    .progress-step.active .step-circle {
+        background: linear-gradient(135deg, var(--secondary-color), var(--accent-gold));
+        border-color: var(--secondary-color);
+        box-shadow: 0 5px 20px rgba(215, 133, 21, 0.4);
+    }
+
+    .progress-step.active .step-circle i {
+        color: white;
+    }
+
+    .step-text {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-light);
+        text-align: center;
+    }
+
+    .progress-step.active .step-text {
+        color: var(--text-dark);
+        font-weight: 600;
+    }
+
+    .progress-line {
+        width: 120px;
+        height: 3px;
+        background: var(--border-subtle);
+        position: relative;
+        top: -30px;
+    }
+
+    /* Main Grid */
+    .delivery-grid {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: 40px;
+        align-items: start;
+    }
+
+    /* Form Card */
+    .form-card {
+        background: var(--white);
+        border-radius: 20px;
+        padding: 50px;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid var(--border-subtle);
+    }
+
+    .form-block {
+        margin-bottom: 40px;
+        padding-bottom: 40px;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .form-block:last-of-type {
+        border-bottom: none;
+        margin-bottom: 30px;
+    }
+
+    .block-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .block-header i {
+        font-size: 1.8rem;
+        color: var(--secondary-color);
+    }
+
+    .block-header h2 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.8rem;
+        font-weight: 400;
+        color: var(--text-dark);
+        margin: 0;
+    }
+
+    /* Input Styles */
+    .input-group {
+        margin-bottom: 25px;
+    }
+
+    .input-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .input-label {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-dark);
+        margin-bottom: 10px;
+        letter-spacing: 0.5px;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-field {
+        width: 100%;
+        padding: 16px 20px 16px 50px;
+        border: 2px solid var(--border-subtle);
+        border-radius: 12px;
+        background: var(--bg-light);
+        color: var(--text-dark);
+        font-size: 1rem;
+        font-family: 'Montserrat', sans-serif;
+        transition: all 0.3s ease;
+    }
+
+    .input-field:focus {
+        outline: none;
+        border-color: var(--secondary-color);
+        background: var(--white);
+        box-shadow: 0 0 0 4px rgba(215, 133, 21, 0.1);
+    }
+
+    .textarea-field {
+        resize: vertical;
+        min-height: 100px;
+        padding-top: 16px;
+    }
+
+    .select-field {
+        appearance: none;
+        cursor: pointer;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 20px center;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 18px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-light);
+        font-size: 1.1rem;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+
+    .input-field:focus ~ .input-icon {
+        color: var(--secondary-color);
+    }
+
+    /* Form Actions */
+    .form-actions {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        padding-top: 20px;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+        text-decoration: none;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--secondary-color), var(--accent-gold));
+        color: white;
+        flex: 1;
+        box-shadow: 0 5px 20px rgba(215, 133, 21, 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px rgba(215, 133, 21, 0.4);
+    }
+
+    .btn-outline {
+        background: transparent;
+        border-color: var(--border-subtle);
+        color: var(--text-dark);
+    }
+
+    .btn-outline:hover {
+        border-color: var(--text-dark);
+        background: var(--bg-cream);
+    }
+
+    .btn-icon {
+        margin-left: auto;
+    }
+
+    /* Sidebar Cards */
+    .info-card {
+        background: var(--white);
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: var(--shadow-soft);
+        border: 1px solid var(--border-subtle);
+        margin-bottom: 25px;
+    }
+
+    .card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 25px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .card-header i {
+        font-size: 1.5rem;
+        color: var(--secondary-color);
+    }
+
+    .card-header h3 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.4rem;
+        font-weight: 400;
+        color: var(--text-dark);
+        margin: 0;
+    }
+
+    /* Benefits */
+    .benefit-item {
+        display: flex;
+        gap: 15px;
+        padding: 15px 0;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .benefit-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .benefit-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(215, 133, 21, 0.1), rgba(201, 169, 97, 0.1));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .benefit-icon i {
+        font-size: 1.2rem;
+        color: var(--secondary-color);
+    }
+
+    .benefit-content h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-dark);
+        margin: 0 0 5px 0;
+    }
+
+    .benefit-content p {
+        font-size: 0.85rem;
+        color: var(--text-light);
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    /* Tips */
+    .tip-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 15px;
+        background: var(--bg-light);
+        border-radius: 10px;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .tip-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .tip-item:hover {
+        background: var(--bg-cream);
+        transform: translateX(5px);
+    }
+
+    .tip-item i {
+        color: var(--secondary-color);
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+
+    .tip-item p {
+        margin: 0;
+        font-size: 0.9rem;
+        color: var(--text-dark);
+        line-height: 1.5;
+    }
+
+    /* Error States */
+    .input-field.error {
+        border-color: #c87b7b;
+        background: rgba(200, 123, 123, 0.05);
+    }
+
+    .error-message {
+        color: #c87b7b;
+        font-size: 0.85rem;
+        margin-top: 8px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .delivery-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .sidebar-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .delivery-wrapper {
+            padding: 0 15px 40px;
+        }
+
+        .header-title {
+            font-size: 2.2rem;
+        }
+
+        .header-icon {
+            width: 60px;
+            height: 60px;
+        }
+
+        .header-icon i {
+            font-size: 2rem;
+        }
+
+        .progress-steps {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .progress-line {
+            width: 3px;
+            height: 40px;
+            top: 0;
+        }
+
+        .step-circle {
+            width: 50px;
+            height: 50px;
+        }
+
+        .step-circle i {
+            font-size: 1.2rem;
+        }
+
+        .form-card {
+            padding: 30px 20px;
+            border-radius: 15px;
+        }
+
+        .input-row {
+            grid-template-columns: 1fr;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+
+        .sidebar-section {
+            grid-template-columns: 1fr;
+        }
+
+        .block-header h2 {
+            font-size: 1.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .header-title {
+            font-size: 1.8rem;
+        }
+
+        .header-subtitle {
+            font-size: 0.95rem;
+        }
+
+        .form-card {
+            padding: 25px 15px;
+        }
+
+        .input-field {
+            padding: 14px 18px 14px 45px;
+            font-size: 0.95rem;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('deliveryForm');
+        const inputs = form.querySelectorAll('.input-field');
+
+        // Real-time validation
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                validateField(this);
+            });
+
+            input.addEventListener('input', function() {
+                if (this.classList.contains('error')) {
+                    validateField(this);
+                }
+            });
+        });
+
+        // Phone number formatting
+        const phoneInput = form.querySelector('input[name="phone_number"]');
+        if (phoneInput) {
+            phoneInput.addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, '').substring(0, 10);
+            });
+        }
+
+        // Pincode validation
+        const pincodeInput = form.querySelector('input[name="pincode"]');
+        if (pincodeInput) {
+            pincodeInput.addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, '').substring(0, 6);
+            });
+        }
+
+        function validateField(field) {
+            const value = field.value.trim();
+            let isValid = true;
+
+            // Remove previous errors
+            field.classList.remove('error');
+            const existingError = field.parentNode.querySelector('.error-message');
+            if (existingError) existingError.remove();
+
+            // Validation rules
+            if (field.name === 'name' && value.length < 2) {
+                isValid = false;
+                showError(field, 'Name must be at least 2 characters');
+            }
+
+            if (field.name === 'email' && !isValidEmail(value)) {
+                isValid = false;
+                showError(field, 'Please enter a valid email');
+            }
+
+            if (field.name === 'phone_number' && value.length !== 10) {
+                isValid = false;
+                showError(field, 'Phone must be 10 digits');
+            }
+
+            if (field.name === 'pincode' && value.length !== 6) {
+                isValid = false;
+                showError(field, 'Pincode must be 6 digits');
+            }
+
+            if (field.name === 'address' && value.length < 10) {
+                isValid = false;
+                showError(field, 'Please enter complete address');
+            }
+
+            return isValid;
+        }
+
+        function showError(field, message) {
+            field.classList.add('error');
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message';
+            errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            field.parentNode.appendChild(errorDiv);
+        }
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        // Form submission
+        form.addEventListener('submit', function(e) {
+            let isValid = true;
+
+            inputs.forEach(field => {
+                if (field.hasAttribute('required') && !validateField(field)) {
+                    isValid = false;
+                }
+            });
+
+            if (!isValid) {
+                e.preventDefault();
+                const firstError = form.querySelector('.error');
+                if (firstError) {
+                    firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
